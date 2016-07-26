@@ -1,0 +1,29 @@
+{
+  "name": "memory-api",
+  "version": "0.0.0",
+  "description": "API for audio upload, reading back audio, and audio keywords.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adriaan-pelzer/memory-api.git"
+  },
+  "author": "Adriaan Pelzer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adriaan-pelzer/memory-api/issues"
+  },
+  "homepage": "https://github.com/adriaan-pelzer/memory-api#readme",
+  "dependencies": {
+    "aws-sdk": "^2.4.6",
+    "cluster": "^0.7.7",
+    "config": "^1.21.0",
+    "highland": "^3.0.0-beta.2",
+    "highland-wrapcallback": "0.0.1",
+    "path": "^0.12.7",
+    "ramda": "^0.21.0"
+  }
+}
