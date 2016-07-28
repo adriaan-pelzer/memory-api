@@ -25,7 +25,7 @@ const handlers = {
     }
 };
 
-var writePayload = R.curry ( ( res, statusCode, headers, payload ) => {
+const writePayload = R.curry ( ( res, statusCode, headers, payload ) => {
     res.writeHead ( statusCode, R.merge ( {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': '*'
@@ -38,12 +38,12 @@ H.wrapCallbackApplied = require ( 'highland-wrapcallback' );
 module.exports = {
     start: () => {
         const server = http.createServer ( ( req, res ) => {
-            const method = R.toLower ( req.method ), url = req.url;
+            const method = R.toLower ( req.method ), url = req.url, handler = R.path ( [ url, method ], handlers );
 
             console.log ( method, url );
 
-            if ( R.type ( R.path ( [ url, method ], handlers ) ) === 'Function' ) {
-                return R.path ( [ url, method ], handlers )( req, res );
+            if ( R.type ( handler ) === 'Function' ) {
+                return handler ( req, res );
             }
 
             return writePayload ( res, 404, {
