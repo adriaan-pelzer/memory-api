@@ -1,9 +1,9 @@
-var R = require ( 'ramda' );
-var P = require ( 'path' );
-var C = require ( 'cluster' );
+const R = require ( 'ramda' );
+const P = require ( 'path' );
+const C = require ( 'cluster' );
 
 if ( C.isMaster ) {
-    R.times ( function () { C.fork () }, require ( 'os' ).cpus ().length );
+    R.times ( () => { C.fork () }, require ( 'os' ).cpus ().length );
 } else {
     require ( P.resolve ( 'main.js' ) ).start ();
 }
