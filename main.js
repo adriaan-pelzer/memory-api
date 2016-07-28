@@ -62,20 +62,21 @@ const pathMatch = ( handlerKey, path ) => {
 };
 
 const pathParams = ( handlerKey, path ) => {
-    var ret = {}, handlerKeyComps = handlerKey.split ( '/' ), pathKeyComps = path.split ( '/' );
+    const handlerKeyComps = handlerKey.split ( '/' ), pathKeyComps = path.split ( '/' );
 
-    for ( var i = 0; i < handlerKeyComps.length; i++ ) {
+    return R.reduce ( ( pathParams, i ) => {
         if ( handlerKeyComps[i].match ( /^\{.+\}$/ ) ) {
-            ret[handlerKeyComps[i].replace ( '{', '' ).replace ( '}', '' )] = pathKeyComps[i];
+            return R.merge ( pathParams, R.fromPairs ( [ [
+                handlerKeyComps[i].replace ( '{', '' ).replace ( '}', '' ),
+                pathKeyComps[i]
+            ] ] ) );
         }
-    }
 
-    return ret;
+        return pathParams;
+    }, {}, R.keys ( handlerKeyComps ) );
 };
 
 H.wrapCallbackApplied = require ( 'highland-wrapcallback' );
-
-console.log ( R.map ( pathRegex, R.keys ( handlers ) ) );
 
 module.exports = {
     start: () => {
@@ -87,8 +88,6 @@ module.exports = {
             }, R.keys ( handlers ) );
 
             const handler = R.path ( [ handlerKey, method ], handlers );
-
-            console.log ( pathParams ( handlerKey, url ) );
 
             if ( R.type ( handler ) === 'Function' ) {
                 return handler ( R.merge ( req, {
